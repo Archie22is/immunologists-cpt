@@ -1,0 +1,262 @@
+/**
+ * Immunologists Plugin Custom CSS 
+ * @author Archie M
+ *
+ */
+
+/** Page title **/
+.immunologists-list-page .page-title {
+    display: none !important;
+}
+
+ /** Search Form **/
+#immunologists-search {
+    display: inline-block; 
+    padding: 60px 0; 
+    margin-left: calc(50% - 50vw);
+    width: 100vw;
+}
+
+#immunologists-search-form {
+    display: flex;
+}
+
+#immunologists-search-form .form-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 25%;
+    padding-right: 20px;
+    border: none;
+    text-align: center;
+}
+
+#immunologists-search-form .form-column:last-of-type {
+    padding-right: 0;
+}
+
+#immunologists-search-form label {
+    display: none;
+}
+
+#immunologists-search-form input[type="text"],
+#immunologists-search-form input[type="search"],
+#immunologists-search-form input[type="text"] {
+    background-color: #EEEDFB;
+    border: 0;
+    color: #A0A7B0;
+    height: 50px;
+    padding: 15px 20px;
+    text-transform: none;
+}
+
+#immunologists-search-form input[type="button"] {
+    background-color: #D33937;
+    border: 0;
+    color: #fff;
+    height: 50px;
+    padding: 15px 20px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+/** Results **/
+.immunologist-profile {
+    border: none;
+    padding: 0;
+    margin-bottom: 10px;
+    display: inline-block;
+    width: 100%;
+    height: auto;
+}
+
+.immunologist-profile img {
+    max-width: 100%;
+    height: auto;
+}
+
+.immunologist-profile h2 {
+    margin: 0;
+    padding: 0;
+}
+
+
+.immunologist-results {
+    display: flex;
+    padding: 15px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.immunologist-results div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.immunologist-heading {
+    color: #000;
+}
+
+.immunologist-heading h3 {
+    color: #000;
+    font-weight: bold;
+    font-size: 1.4em;
+}
+
+.immunologist-heading div {
+    color: #A0A7B0;
+}
+
+.immunologist-heading div:nth-child(3) {
+    text-align: right;
+}
+
+
+/* Widths */
+.immunologist-results-items {
+    color: #A0A7B0;
+}
+
+.immunologist-results-items { }
+
+.immunologist-results-items p {
+    padding: 0; 
+    margin: 0;
+}
+
+
+/* Columns widths */
+.immunologist-results div, 
+.immunologist-results-items div {
+    width: 40%;
+}
+
+.immunologist-results div:nth-child(3), 
+.immunologist-results-items div:nth-child(3) {
+    width: 20%;
+}
+
+.immunologist-results div a {
+    text-align: right;
+}
+
+.immunologist-profile-main .item-logo {
+    border-radius: 50%;
+    display: block;
+    float: left;
+    min-height: 50px;
+    height: 50px;
+    overflow: hidden;
+    width: 50px;
+}
+
+.immunologist-profile-main .item-logo img {
+    transition: 0.25s all ease-in-out;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+}
+
+.immunologist-profile-main p {
+    position: absolute;
+    left: 90px;
+}
+
+
+/** Single **/
+.single-immunologist-heading {
+    padding-top: 60px;
+}
+
+.single-immunologist-listing {
+    padding: 0 40px;
+}
+
+.single-immunologist-image .item-logo {
+    border-radius: 50%;
+    display: block;
+    float: left;
+    min-height: 160px;
+    height: 160px;
+    overflow: hidden;
+    width: 160px;
+}
+
+.single-immunologist-image .item-logo img {
+    transition: 0.25s all ease-in-out;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+}
+
+
+@media screen and (max-width:680px) {
+
+    #immunologists-search-form {
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    #immunologists-search-form .form-column {
+        width: 50%;
+    }
+
+    #immunologists-search-form input[type="button"] {
+        width: calc(100% - 20px);
+    }
+
+    .immunologist-heading {
+        display: none !important;
+    }
+
+    .immunologist-results {
+        display: inline-block;
+        width: 100%;
+    }
+
+    .immunologist-results div {
+        margin: 5px 0;
+        width: 100%;
+    }
+
+    .immunologist-results div:nth-child(3), 
+    .immunologist-results-items div:nth-child(3) {
+        width: 40%;
+    }
+
+    .immunologist-results div a {
+        text-align: left;
+    }
+
+}
+
+
+@media screen and (max-width:480px) {
+
+    #immunologists-search-form .form-column {
+        width: 100%;
+    }
+
+    #immunologists-search-form .form-column {
+        padding-right: 0;
+    }
+
+    #immunologists-search-form input[type="button"] {
+        width: 100%;
+    }
+
+    .immunologist-results div:nth-child(3), 
+    .immunologist-results-items div:nth-child(3) {
+        width: 100%;
+    }
+
+    .immunologist-profile-main p {
+        position: relative;
+        left: 0;
+    }
+
+}
