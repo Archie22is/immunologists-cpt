@@ -154,6 +154,7 @@ function immunologists_register_acf_fields() {
                     'name' => 'country',
                     'type' => 'select',
                     'choices' => array(
+                        '' => __('Select country', 'text_domain'), // Default undetectable option
                         'Afghanistan' => __('Afghanistan', 'text_domain'),
                         'Albania' => __('Albania', 'text_domain'),
                         'Algeria' => __('Algeria', 'text_domain'),
@@ -467,20 +468,19 @@ function immunologists_ajax_search() {
         'paged'          => $paged,
     );
 
-    // Initialize meta_query
+    // Initialize tax_query and meta_query
+    $tax_query = array('relation' => 'AND');
     $meta_query = array('relation' => 'AND');
 
     // Debug: Log received data
-    error_log('Received data: ' . print_r($_POST, true));
+    //error_log('Received data: ' . print_r($_POST, true));
 
-    // Apply filters only if criteria are provided
+    // Apply taxonomy filter if criteria are provided
     if (!empty($_POST['field'])) {
-        $args['tax_query'] = array(
-            array(
-                'taxonomy' => 'area_of_research',
-                'field'    => 'slug',
-                'terms'    => sanitize_text_field($_POST['field']),
-            ),
+        $tax_query[] = array(
+            'taxonomy' => 'area_of_research',
+            'field'    => 'slug',
+            'terms'    => sanitize_text_field($_POST['field']),
         );
     }
 
@@ -504,13 +504,18 @@ function immunologists_ajax_search() {
         $args['s'] = sanitize_text_field($_POST['s']);
     }
 
+    // Apply tax_query if it contains more than just the default 'AND'
+    if (count($tax_query) > 1) {
+        $args['tax_query'] = $tax_query;
+    }
+
     // Apply meta_query if it contains more than just the default 'AND'
     if (count($meta_query) > 1) {
         $args['meta_query'] = $meta_query;
     }
 
     // Debug: Log the constructed query arguments
-    error_log('Query arguments: ' . print_r($args, true));
+    //error_log('Query arguments: ' . print_r($args, true));
 
     // Execute the query
     $query = new WP_Query($args);
@@ -601,6 +606,11 @@ function get_unique_immunologist_countries() {
 // Shortcode for Search Form
 function immunologists_search_form_shortcode() {
     $unique_countries = get_unique_immunologist_countries();
+    $research_terms = get_terms(array(
+        'taxonomy' => 'area_of_research',
+        'hide_empty' => false,
+    ));
+
     ob_start();
     ?>
     <div class="immunologists-section">
@@ -626,7 +636,14 @@ function immunologists_search_form_shortcode() {
                     
                     <div class="form-column">
                         <label for="search-field"><?php _e('Area of Research', 'text_domain'); ?></label><br>
-                        <input type="text" id="search-field" name="field" size="30" placeholder="Area of Research">
+                        <select id="search-field" name="field">
+                            <option value=""><?php _e('Select Area of Research', 'text_domain'); ?></option>
+                            <?php
+                            foreach ($research_terms as $term) {
+                                echo '<option value="' . esc_attr($term->slug) . '">' . esc_html($term->name) . '</option>';
+                            }
+                            ?>
+                        </select>
                     </div>
 
                     <div class="form-column">
