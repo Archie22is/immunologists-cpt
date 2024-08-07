@@ -576,25 +576,31 @@ add_action('wp_ajax_nopriv_immunologists_search', 'immunologists_ajax_search');
 
 // Add this function to retrieve unique countries with listings:
 function get_unique_immunologist_countries() {
-    global $wpdb;
-    $query = "
-        SELECT DISTINCT meta_value 
-        FROM $wpdb->postmeta 
-        WHERE meta_key = 'country' 
-        AND post_id IN (
-            SELECT ID 
-            FROM $wpdb->posts 
-            WHERE post_type = 'immunologist' 
-            AND post_status = 'publish'
-        )
-    ";
-    $results = $wpdb->get_col($query);
-    return $results;
+    $unique_countries = array();
+    $args = array(
+        'post_type'      => 'immunologist',
+        'posts_per_page' => -1,
+        'post_status'    => 'publish',
+        'fields'         => 'ids',
+    );
+
+    $query = new WP_Query($args);
+    if ($query->have_posts()) {
+        foreach ($query->posts as $post_id) {
+            $country = get_post_meta($post_id, 'country', true);
+            if ($country && !in_array($country, $unique_countries)) {
+                $unique_countries[] = $country;
+            }
+        }
+    }
+    wp_reset_postdata();
+    return $unique_countries;
 }
 
 
 // Shortcode for Search Form
 function immunologists_search_form_shortcode() {
+    $unique_countries = get_unique_immunologist_countries();
     ob_start();
     ?>
     <div class="immunologists-section">
