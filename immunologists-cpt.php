@@ -574,6 +574,25 @@ add_action('wp_ajax_immunologists_search', 'immunologists_ajax_search');
 add_action('wp_ajax_nopriv_immunologists_search', 'immunologists_ajax_search');
 
 
+// Add this function to retrieve unique countries with listings:
+function get_unique_immunologist_countries() {
+    global $wpdb;
+    $query = "
+        SELECT DISTINCT meta_value 
+        FROM $wpdb->postmeta 
+        WHERE meta_key = 'country' 
+        AND post_id IN (
+            SELECT ID 
+            FROM $wpdb->posts 
+            WHERE post_type = 'immunologist' 
+            AND post_status = 'publish'
+        )
+    ";
+    $results = $wpdb->get_col($query);
+    return $results;
+}
+
+
 // Shortcode for Search Form
 function immunologists_search_form_shortcode() {
     ob_start();
@@ -614,9 +633,8 @@ function immunologists_search_form_shortcode() {
                         <select id="search-country" name="country">
                             <option value=""><?php _e('Select a Country', 'text_domain'); ?></option>
                             <?php
-                            $countries = get_field_object('field_country')['choices'];
-                            foreach ($countries as $value => $label) {
-                                echo '<option value="' . esc_attr($value) . '">' . esc_html($label) . '</option>';
+                            foreach ($unique_countries as $country) {
+                                echo '<option value="' . esc_attr($country) . '">' . esc_html($country) . '</option>';
                             }
                             ?>
                         </select>
