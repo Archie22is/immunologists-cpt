@@ -6,32 +6,35 @@
  */
 
 jQuery(document).ready(function($) {
-
-    // Dynamic search results
-    $('#immunologists-search-button').on('click', function() {
-        var search_data = {
+    function loadImmunologists(paged = 1) {
+        var data = {
             action: 'immunologists_search',
             nonce: immunologists_ajax.nonce,
             s: $('#search-name').val(),
+            field: $('#search-field').val(),
             location: $('#search-location').val(),
-            field: $('#search-field').val()
+            country: $('#search-country').val(),
+            paged: paged
         };
 
-        $.ajax({
-            url: immunologists_ajax.ajax_url,
-            type: 'POST',
-            data: search_data,
-            beforeSend: function() {
-                $('#immunologists-search-results').html('<p>Loading...</p>');
-            },
-            success: function(response) {
-                $('#immunologists-search-results').html(response);
-            }
+        $.post(immunologists_ajax.ajax_url, data, function(response) {
+            $('#immunologists-search-results').html(response);
+
+            // Bind pagination links
+            $('.page-numbers').on('click', function(e) {
+                e.preventDefault();
+                var page = $(this).data('page');
+                loadImmunologists(page);
+            });
         });
+    }
+
+    $('#immunologists-search-button').on('click', function(e) {
+        e.preventDefault();
+        loadImmunologists();
     });
 
-
-    // Debug
-    console.log("Immunologists loaded...");
-
+    // Initial load
+    loadImmunologists();
+    
 });
