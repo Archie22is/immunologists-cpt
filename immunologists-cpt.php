@@ -433,6 +433,7 @@ add_action('acf/init', 'immunologists_register_acf_fields');
 // Require additional files 
 require_once ( plugin_dir_path( __FILE__ ) . 'includes/settings-menu.php' );
 require_once ( plugin_dir_path( __FILE__ ) . 'includes/form-handler.php' );
+require_once ( plugin_dir_path( __FILE__ ) . 'includes/country-column.php' );
 
 
 // Enqueue Custom CSS and JS
@@ -677,6 +678,10 @@ function immunologists_search_form_shortcode() {
     return ob_get_clean();
 }
 add_shortcode('immunologists_search_form', 'immunologists_search_form_shortcode');
+
+
+// Add Country column in admin to show immunologists countries 
+
 
 
 // Add class to body where the page/post contained the shortcode above 
